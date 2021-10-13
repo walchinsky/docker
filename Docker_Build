@@ -2,7 +2,7 @@
 
 su root
 apt-get update --allow-releaseinfo-change
-apt-get install sudo git vim curl wget -y
+apt-get install sudo git vim curl wget fail2ban -y
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install unattended-upgrades
 exit
