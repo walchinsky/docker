@@ -1,0 +1,97 @@
+#!/bin/sh
+
+su root
+apt-get update --allow-releaseinfo-change
+apt-get install sudo git vim curl wget -y
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install unattended-upgrades
+exit
+
+## edit this file if you want
+# sudo vim /etc/apt/apt.conf.d/50unattended-upgrades
+
+# Installs Docker and Docker-Compose
+sudo apt-get install     apt-transport-https     ca-certificates     curl     gnupg     lsb-release
+echo   "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+# Install Nginx Proxy Manager (npm)
+sudo mkdir /var/docker_data/npm
+cd /var/docker_data/npm
+curl -LJO https://raw.githubusercontent.com/robertomano24/nginx-proxy-manager/main/docker-compose.yml
+sudo docker-compose up -d
+
+# Installs Portainer (must configure in npm)
+#sudo docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
+
+# Installs xowa offline wiki
+#sudo docker run -d -v /var/docker_data/xowa/storage:/opt/xowa/wiki --name xowa -p 8083:8080 quantumobject/docker-xowa
+
+# Install Invoice Ninja
+git clone https://github.com/invoiceninja/dockerfiles.git /var/docker_data/invoice_ninja/
+sudo cd /var/docker_data/invoice_ninja/
+sudo chmod 755 docker/app/public
+sudo chown -R 1500:1500 docker/app
+#sudo docker run --rm -it invoiceninja/invoiceninja php artisan key:generate --show
+
+# Install Discourse
+mkdir /var/docker_data/discourse
+git clone https://github.com/discourse/discourse_docker.git /var/docker_data/discourse/
+cd /var/docker_data/discourse/
+cp samples/standalone.yml containers/app.yml
+#sudo ./discourse-setup 
+
+# Run as needed to troubleshoot ./discourse-doctor 
+# update if it doesn't work vim containers/app.yml
+# rebuild file as needed ./launcher rebuild app
+
+
+##################################
+#ls
+#mkdir jitsi_download
+#sudo wget https://github.com/jitsi/docker-jitsi-meet/archive/refs/tags/stable-5963.tar.gz
+#tar -zxvf stable-5963.tar.gz 
+#ls
+#rmdir jitsi_download/
+#cd docker-jitsi-meet-stable-5963/
+#cp env.example .env
+#sudo nano .env 
+#mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody/config,prosody/prosody-plugins-custom,jicofo,jvb,jigasi,jibri}
+#ls
+#ls -la
+#sudo nano .env 
+#./gen-passwords.sh
+#sudo nano .env 
+#sudo docker-compose up -d
+#sudo docker ps
+#cd docker-jitsi-meet-stable-5963/
+#sudo nano .env 
+#e
+#ls
+#cd docker-jitsi-meet-stable-5963/
+#ls
+#sudo nano docker-compose.yml 
+#sudo nano env.example 
+#sudo docker ps -a
+#sudo nano .env
+#sudo docker-compose up -d
+#pwd
+#ls -la
+#mkdir filerun_docker
+#cd filerun_docker/
+#nano docker-compose.yml
+#mkdir /filerun /filerun/html /filerun/user-files /filerun/db
+#sudo mkdir /filerun /filerun/html /filerun/user-files /filerun/db
+#docker-compose up -d
+#sudo docker-compose up -d
+#nano docker-compose.yml
+#sudo docker-compose up -d
+
+
+
+
