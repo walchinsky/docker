@@ -21,7 +21,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
 # Install Nginx Proxy Manager (npm)
-sudo mkdir /var/docker_data/npm
+sudo mkdir -p /var/docker_data/npm
 cd /var/docker_data/npm
 curl -LJO https://raw.githubusercontent.com/robertomano24/nginx-proxy-manager/main/docker-compose.yml
 sudo docker-compose up -d
@@ -40,7 +40,7 @@ sudo chown -R 1500:1500 docker/app
 #sudo docker run --rm -it invoiceninja/invoiceninja php artisan key:generate --show
 
 # Install Discourse
-mkdir /var/docker_data/discourse
+mkdir -p /var/docker_data/discourse
 git clone https://github.com/discourse/discourse_docker.git /var/docker_data/discourse/
 cd /var/docker_data/discourse/
 cp samples/standalone.yml containers/app.yml
